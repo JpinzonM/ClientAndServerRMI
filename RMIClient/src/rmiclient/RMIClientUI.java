@@ -7,6 +7,8 @@ package rmiclient;
 
 import com.prog.distribuida.rmi.server.RMIServerInterface;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -20,7 +22,7 @@ import javax.swing.filechooser.FileSystemView;
  *
  * @author Jorge Pinzon M
  */
-public class RMIClientUI extends javax.swing.JFrame {
+public class RMIClientUI extends javax.swing.JFrame implements RMIServerInterface {
 
     private File selectedFile;
     private String CheckSum = new String();
@@ -145,9 +147,9 @@ public class RMIClientUI extends javax.swing.JFrame {
             Registry registry = LocateRegistry.getRegistry("localhost");
             RMIServerInterface stub = (RMIServerInterface) registry.lookup("RMIServerInterface");
             byte[] response = stub.GetSomeBytesFromServerSide("this is a test");
-            //byte[] response = stub.GetSomeBytesFromServerSide(selectedFile.getName(), selectedFile, 100, 200);
+
             stub.prueba("hi this is me: 10.10.40.22");// probando envio al servidor
-            
+
             System.out.println("response: " + new String(response));
         } catch (RemoteException ex) {
             Logger.getLogger(RMIClientUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -202,4 +204,31 @@ public class RMIClientUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public byte[] GetSomeBytesFromServerSide(String stringToConvert) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean sendData(String filename, byte[] data, int len) throws RemoteException {
+
+        try {
+            File f = new File(filename);
+            f.createNewFile();
+            FileOutputStream out = new FileOutputStream(f, true);
+            out.write(data, 0, len);
+            out.flush();
+            out.close();
+            System.out.println("Done writing data...");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    @Override
+    public String prueba(String name) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

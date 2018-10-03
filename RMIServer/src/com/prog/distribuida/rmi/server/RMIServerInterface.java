@@ -18,4 +18,7 @@ public interface RMIServerInterface extends Remote{
     
     public String prueba(String name) throws RemoteException; 
     
+    public boolean sendData(String filename, byte[] data, int len) throws RemoteException;
+
+    
 }

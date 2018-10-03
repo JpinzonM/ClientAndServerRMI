@@ -18,5 +18,10 @@ public interface RMIServerInterface extends Remote{
     public byte[] GetSomeBytesFromServerSide(String stringToConvert) throws RemoteException;
     //public byte[] GetSomeBytesFromServerSide(String NameFile, File file, int i, int f) throws RemoteException;
     
+    public boolean sendData(String filename, byte[] data, int len) throws RemoteException;
+    
+    public String getName() throws RemoteException;
+    
+            
     public String prueba(String name)throws RemoteException;
 }
